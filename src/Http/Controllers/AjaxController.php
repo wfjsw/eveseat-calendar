@@ -16,46 +16,58 @@ use Seat\Kassie\Calendar\Models\Operation;
  */
 class AjaxController
 {
-    /**
-     * @return mixed
-     */
-    public function getOngoing()
-    {
-        $operations = Operation::with('tags', 'fleet_commander', 'attendees')
-                               ->where('start_at', '<', carbon()->now())
-                               ->where('end_at', '>', carbon()->now())
-                               ->where('is_cancelled', false);
-
-        return $this->buildOperationDataTable($operations);
-    }
 
     /**
      * @return mixed
      */
-    public function getIncoming()
+    public function getAllOps()
     {
-        $operations = Operation::with('tags', 'fleet_commander', 'attendees')
-            ->where('start_at', '>', carbon()->now())
-            ->where('is_cancelled', false);
+        $operations = Operation::with('tags', 'fleet_commander', 'attendees');
 
         return $this->buildOperationDataTable($operations);
     }
 
-    /**
-     * @return mixed
-     */
-    public function getFaded()
-    {
-        $operations = Operation::with('tags', 'fleet_commander', 'attendees')
-                               ->where(function ($query) {
-                                   $query->where('start_at', '<', carbon()->now())
-                                         ->where('end_at', '<', carbon()->now());
-                               })
-                               ->orWhere('is_cancelled', true);
+
+    // /**
+    //  * @return mixed
+    //  */
+    // public function getOngoing()
+    // {
+    //     $operations = Operation::with('tags', 'fleet_commander', 'attendees')
+    //                            ->where('start_at', '<', carbon()->now())
+    //                            ->where('end_at', '>', carbon()->now())
+    //                            ->where('is_cancelled', false);
+
+    //     return $this->buildOperationDataTable($operations);
+    // }
+
+    // /**
+    //  * @return mixed
+    //  */
+    // public function getIncoming()
+    // {
+    //     $operations = Operation::with('tags', 'fleet_commander', 'attendees')
+    //         ->where('start_at', '>', carbon()->now())
+    //         ->where('is_cancelled', false);
+
+    //     return $this->buildOperationDataTable($operations);
+    // }
+
+    // /**
+    //  * @return mixed
+    //  */
+    // public function getFaded()
+    // {
+    //     $operations = Operation::with('tags', 'fleet_commander', 'attendees')
+    //                            ->where(function ($query) {
+    //                                $query->where('start_at', '<', carbon()->now())
+    //                                      ->where('end_at', '<', carbon()->now());
+    //                            })
+    //                            ->orWhere('is_cancelled', true);
 
 
-        return $this->buildOperationDataTable($operations);
-    }
+    //     return $this->buildOperationDataTable($operations);
+    // }
 
     /**
      * @param $operation_id
@@ -94,10 +106,10 @@ class AjaxController
                 return sprintf('<span data-toggle="tooltip" title="%s">%s</span>',
                     $row->start_at, human_diff($row->start_at));
             })
-            ->editColumn('end_at', function ($row) {
-                return sprintf('<span data-toggle="tooltip" title="%s">%s</span>',
-                    $row->end_at, human_diff($row->end_at));
-            })
+            // ->editColumn('end_at', function ($row) {
+            //     return sprintf('<span data-toggle="tooltip" title="%s">%s</span>',
+            //         $row->end_at, human_diff($row->end_at));
+            // })
             ->editColumn('fleet_commander', function ($row) {
                 return view('calendar::operation.includes.fleet_commander', ['op' => $row]);
             })
@@ -108,9 +120,9 @@ class AjaxController
             ->editColumn('staging_sys', function ($row) {
                 return view('calendar::operation.includes.staging', ['op' => $row]);
             })
-            ->addColumn('subscription', function ($row) {
-                return view('calendar::operation.includes.subscription', ['op' => $row]);
-            })
+            // ->addColumn('subscription', function ($row) {
+            //     return view('calendar::operation.includes.subscription', ['op' => $row]);
+            // })
             ->addColumn('actions', function ($row) {
                 return view('calendar::operation.includes.actions', ['op' => $row]);
             })

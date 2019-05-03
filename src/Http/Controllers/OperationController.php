@@ -51,18 +51,6 @@ class OperationController extends Controller
 
         $tags = Tag::all()->sortBy('order');
 
-        $ops_incoming = $ops->filter(function($op) {
-            return $op->status == "incoming";
-        });
-
-        $ops_ongoing = $ops->filter(function($op) {
-            return $op->status == "ongoing";
-        });
-
-        $ops_faded = $ops->filter(function($op) {
-            return $op->status == "faded" || $op->status == "cancelled";
-        });
-
         $roles = Role::orderBy('title')->get();
         $userCharacters = auth()->user()->group->users->sortBy('name');
         $mainCharacter = auth()->user()->group->main_character;
@@ -79,9 +67,6 @@ class OperationController extends Controller
             'roles'          => $roles,
             'userCharacters' => $userCharacters,
             'ops_all' => $ops,
-            'ops_incoming' => $ops_incoming,
-            'ops_ongoing' => $ops_ongoing,
-            'ops_faded' => $ops_faded,
             'default_op' => $request->id ? $request->id : 0,
             'tags' => $tags,
             'notification_channels' => $notification_channels,
@@ -97,8 +82,7 @@ class OperationController extends Controller
             'title' => 'required',
             'importance' => 'required|between:0,5',
             'known_duration' => 'required',
-            'time_start' => 'required_without_all:time_start_end|date|after_or_equal:today',
-            'time_start_end' => 'required_without_all:time_start'
+            'time_start' => 'required|date'
         ]);
 
         $operation = new Operation($request->all());
@@ -112,13 +96,9 @@ class OperationController extends Controller
             }
         }
 
-        if ($request->known_duration == "no")
-            $operation->start_at = Carbon::parse($request->time_start);
-        else {
-            $dates = explode(" - ", $request->time_start_end);
-            $operation->start_at = Carbon::parse($dates[0]);
-            $operation->end_at = Carbon::parse($dates[1]);
-        }
+        $operation->start_at = Carbon::parse($request->time_start);
+        $operation->end_at = null;
+
         $operation->start_at = Carbon::parse($operation->start_at);
 
         if ($request->importance == 0)
@@ -144,8 +124,7 @@ class OperationController extends Controller
             'title' => 'required',
             'importance' => 'required|between:0,5',
             'known_duration' => 'required',
-            'time_start' => 'required_without_all:time_start_end|date|after_or_equal:today',
-            'time_start_end' => 'required_without_all:time_start'
+            'time_start' => 'required|date'
         ]);
 
         $operation = Operation::find($request->operation_id);
@@ -170,14 +149,8 @@ class OperationController extends Controller
             $operation->fc              = $request->fc;
             $operation->fc_character_id = $request->fc_character_id == null ? null : $request->fc_character_id;
 
-            if ($request->known_duration == "no") {
-                $operation->start_at = Carbon::parse($request->time_start);
-                $operation->end_at = null;
-            } else {
-                $dates = explode(" - ", $request->time_start_end);
-                $operation->start_at = Carbon::parse($dates[0]);
-                $operation->end_at = Carbon::parse($dates[1]);
-            }
+            $operation->start_at = Carbon::parse($request->time_start);
+            $operation->end_at = null;
 
             $operation->start_at = Carbon::parse($operation->start_at);
 

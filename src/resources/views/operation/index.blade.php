@@ -24,22 +24,12 @@
     @include('calendar::operation.includes.modals.confirm_close')
     @include('calendar::operation.includes.modals.confirm_cancel')
     @include('calendar::operation.includes.modals.confirm_activate')
-    @include('calendar::operation.includes.modals.subscribe')
+    <!-- @include('calendar::operation.includes.modals.subscribe') -->
     @include('calendar::operation.includes.modals.details')
 
     <div class="row">
         <div class="col-md-12">
-            @include('calendar::operation.includes.ongoing')
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            @include('calendar::operation.includes.incoming')
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            @include('calendar::operation.includes.faded')
+            @include('calendar::operation.includes.allops')
         </div>
     </div>
 
@@ -59,11 +49,11 @@
     <script src="{{ asset('web/js/calendar.js') }}"></script>
     @include('web::includes.javascript.id-to-name')
     <script type="text/javascript">
-        $('#calendar-ongoing').DataTable({
+        $('#calendar-allops').DataTable({
             processing: true,
             serverSide: true,
             ajax: {
-                url: '{{ route('operation.ongoing') }}'
+                url: '{{ route('operation.allops') }}'
             },
             dom: 'rt<"col-sm-5"i><"col-sm-7"p>',
             columns: [
@@ -71,70 +61,10 @@
                 {data: 'tags', name: 'tags', orderable: false},
                 {data: 'importance', name: 'importance'},
                 {data: 'start_at', name: 'start_at'},
-                {data: 'end_at', name: 'end_at'},
+                // {data: 'end_at', name: 'end_at'},
                 {data: 'fleet_commander', name: 'fleet_commander', orderable: false},
                 {data: 'staging_sys', name: 'staging_sys'},
-                {data: 'subscription', name: 'subscription', orderable: false},
-                {data: 'actions', name: 'actions', orderable: false, searchable: false}
-            ],
-            order: [
-                [4, 'desc']
-            ],
-            drawCallback: function () {
-                // enable tooltip
-                $('[data-toggle="tooltip"]').tooltip();
-
-                // resolve EVE ids to names.
-                ids_to_names();
-            }
-        });
-
-        $('#calendar-incoming').DataTable({
-            processing: true,
-            serverSide: true,
-            ajax: {
-                url: '{{ route('operation.incoming') }}'
-            },
-            dom: 'rt<"col-sm-5"i><"col-sm-7"p>',
-            columns: [
-                {data: 'title', name: 'title'},
-                {data: 'tags', name: 'tags', orderable: false},
-                {data: 'importance', name: 'importance'},
-                {data: 'start_at', name: 'start_at'},
-                {data: 'duration', name: 'duration', orderable: false},
-                {data: 'fleet_commander', name: 'fleet_commander', orderable: false},
-                {data: 'staging_sys', name: 'staging_sys'},
-                {data: 'subscription', name: 'subscription', orderable: false},
-                {data: 'actions', name: 'actions', orderable: false, searchable: false}
-            ],
-            order: [
-                [3, 'asc']
-            ],
-            drawCallback: function () {
-                // enable tooltip
-                $('[data-toggle="tooltip"]').tooltip();
-
-                // resolve EVE ids to names.
-                ids_to_names();
-            }
-        });
-
-        $('#calendar-faded').DataTable({
-            processing: true,
-            serverSide: true,
-            ajax: {
-                url: '{{ route('operation.faded') }}'
-            },
-            dom: 'rt<"col-sm-5"i><"col-sm-7"p>',
-            columns: [
-                {data: 'title', name: 'title'},
-                {data: 'tags', name: 'tags', orderable: false},
-                {data: 'importance', name: 'importance'},
-                {data: 'start_at', name: 'start_at'},
-                {data: 'end_at', name: 'end_at'},
-                {data: 'fleet_commander', name: 'fleet_commander', orderable: false},
-                {data: 'staging_sys', name: 'staging_sys'},
-                {data: 'subscription', name: 'subscription', orderable: false},
+                // {data: 'subscription', name: 'subscription', orderable: false},
                 {data: 'actions', name: 'actions', orderable: false, searchable: false}
             ],
             order: [

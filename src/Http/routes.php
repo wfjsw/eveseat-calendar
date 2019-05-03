@@ -55,19 +55,24 @@ Route::group([
             'uses' => 'AjaxController@getDetail'
         ])->where('id', '[0-9]+');
 
-        Route::get('/operation/ongoing', [
-            'as' => 'operation.ongoing',
-            'uses' => 'AjaxController@getOngoing',
+        Route::get('/operation/allops', [
+            'as' => 'operation.allops',
+            'uses' => 'AjaxController@getAllOps',
         ]);
 
-        Route::get('/operation/incoming', [
-            'as' => 'operation.incoming',
-            'uses' => 'AjaxController@getIncoming',
-        ]);
+        // Route::get('/operation/ongoing', [
+        //     'as' => 'operation.ongoing',
+        //     'uses' => 'AjaxController@getOngoing',
+        // ]);
 
-        Route::get('/operation/faded', [
-            'as' => 'operation.faded',
-            'uses' => 'AjaxController@getFaded',
+        // Route::get('/operation/incoming', [
+        //     'as' => 'operation.incoming',
+        //     'uses' => 'AjaxController@getIncoming',
+        // ]);
+
+        // Route::get('/operation/faded', [
+        //     'as' => 'operation.faded',
+        //     'uses' => 'AjaxController@getFaded',
         ]);
     });
 

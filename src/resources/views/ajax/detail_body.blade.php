@@ -12,22 +12,6 @@
                 <div class="row">
                     <div class="col-md-6">
                         <ul class="list-group no-margin">
-                            <li class="list-group-item no-border">
-                                <b>{{ trans('calendar::seat.status') }}</b> :
-                                @if($op->status == 'cancelled')
-                                    <span class="label label-danger">{{ trans('calendar::seat.cancelled') }}</span>
-                                @else
-                                    @if($op->status == 'ongoing')
-                                        <span class="label label-success">{{ trans('calendar::seat.ongoing_operations') }}</span>
-                                    @endif
-                                    @if($op->status == 'incoming')
-                                        <span class="label label-primary">{{ trans('calendar::seat.incoming_operations') }}</span>
-                                    @endif
-                                    @if($op->status == 'faded')
-                                        <span class="label label-faded">{{ trans('calendar::seat.faded_operations') }}</span>
-                                    @endif
-                                @endif
-                            </li>
 
                             <li class="list-group-item no-border">
                                 <b>{{ trans('calendar::seat.tags') }}</b> :
@@ -109,7 +93,7 @@
     </div>
 </div>
 
-<div class="row">
+<!-- <div class="row">
     <div class="col-md-12">
         <div class="box box-solid no-border no-shadow">
             <div class="box-header with-border">
@@ -138,7 +122,7 @@
             </div>
         </div>
     </div>
-</div>
+</div> -->
 
 <div class="row">
     <div class="col-md-12">

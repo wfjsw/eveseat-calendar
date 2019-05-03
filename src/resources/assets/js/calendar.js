@@ -5,9 +5,9 @@ $('#modalCreateOperation').on('show.bs.modal', function(e) {
 
     var options = {
         timePicker: true,
-        timePickerIncrement: 15,
+        timePickerIncrement: 1,
         timePicker24Hour: true,
-        minDate: moment.utc(),
+        // minDate: moment.utc(),
         startDate: nowRounded,
         locale: {
             "format": "MM/DD/YYYY HH:mm"
@@ -17,9 +17,9 @@ $('#modalCreateOperation').on('show.bs.modal', function(e) {
 
     options.singleDatePicker = true;
     $('#modalCreateOperation').find('input[name="time_start"]').daterangepicker(options);
-    options.singleDatePicker = false;
-    options.endDate = nowRounded.clone().add('2', 'h');
-    $('#modalCreateOperation').find('input[name="time_start_end"]').daterangepicker(options);
+    // options.singleDatePicker = false;
+    // options.endDate = nowRounded.clone().add('2', 'h');
+    // $('#modalCreateOperation').find('input[name="time_start_end"]').daterangepicker(options);
 
     if ($('#sliderImportance').length <= 0)
         $('#modalCreateOperation').find('input[name="importance"]').slider({
@@ -119,9 +119,9 @@ $('#modalUpdateOperation').on('show.bs.modal', function(e) {
 
         var options = {
             timePicker: true,
-            timePickerIncrement: 15,
+            timePickerIncrement: 1,
             timePicker24Hour: true,
-            minDate: nowRounded,
+            // minDate: nowRounded,
             startDate: moment.utc(op.start_at),
             locale: {
                 "format": "MM/DD/YYYY HH:mm"
@@ -132,19 +132,19 @@ $('#modalUpdateOperation').on('show.bs.modal', function(e) {
         options.singleDatePicker = true;
         $('#modalUpdateOperation').find('input[name="time_start"]').daterangepicker(options);
 
-        options.singleDatePicker = false;
-        if (op.end_at) {
-            options.endDate = moment.utc(op.end_at);
-            $('#modalUpdateOperation').find('input[name="known_duration"][value="yes"]').prop('checked', true);
-            $('#modalUpdateOperation').find('input[name="time_start"]').closest('div.form-group').addClass('hidden');
-            $('#modalUpdateOperation').find('input[name="time_start_end"]').closest('div.form-group').removeClass('hidden');
-        } else {
-            options.endDate = moment.utc(op.start_at).clone().add('2', 'h');
-            $('#modalUpdateOperation').find('input[name="known_duration"][value="no"]').prop('checked', true);
-            $('#modalUpdateOperation').find('input[name="time_start"]').closest('div.form-group').removeClass('hidden');
-            $('#modalUpdateOperation').find('input[name="time_start_end"]').closest('div.form-group').addClass('hidden');
-        }
-        $('#modalUpdateOperation').find('input[name="time_start_end"]').daterangepicker(options);
+        // options.singleDatePicker = false;
+        // if (op.end_at) {
+        //     options.endDate = moment.utc(op.end_at);
+        //     $('#modalUpdateOperation').find('input[name="known_duration"][value="yes"]').prop('checked', true);
+        //     $('#modalUpdateOperation').find('input[name="time_start"]').closest('div.form-group').addClass('hidden');
+        //     $('#modalUpdateOperation').find('input[name="time_start_end"]').closest('div.form-group').removeClass('hidden');
+        // } else {
+        //     options.endDate = moment.utc(op.start_at).clone().add('2', 'h');
+        //     $('#modalUpdateOperation').find('input[name="known_duration"][value="no"]').prop('checked', true);
+        //     $('#modalUpdateOperation').find('input[name="time_start"]').closest('div.form-group').removeClass('hidden');
+        //     $('#modalUpdateOperation').find('input[name="time_start_end"]').closest('div.form-group').addClass('hidden');
+        // }
+        // $('#modalUpdateOperation').find('input[name="time_start_end"]').daterangepicker(options);
 
         if ($('#updateSliderImportance').length > 0) {
             $('#modalUpdateOperation').find('input[name="importance"]').slider('destroy');
@@ -197,23 +197,23 @@ $('#formUpdateOperation').submit(function(e) {
     });
 });
 
-$('#modalSubscribe').on('show.bs.modal', function(e) {
-    var operation_id = $(e.relatedTarget).data('op-id');
-    var character_id = $(e.relatedTarget).data('character-id');
-    var status = $(e.relatedTarget).data('status');
+// $('#modalSubscribe').on('show.bs.modal', function(e) {
+//     var operation_id = $(e.relatedTarget).data('op-id');
+//     var character_id = $(e.relatedTarget).data('character-id');
+//     var status = $(e.relatedTarget).data('status');
 
-    $(e.currentTarget).find('input[name="operation_id"]').val(operation_id);
+//     $(e.currentTarget).find('input[name="operation_id"]').val(operation_id);
 
-    if (status && character_id) {
-        $('#modalSubscribe').find("input[name=character_id][value=" + character_id + "]").prop('checked', true);
-        $('#modalSubscribe').find('option[value="' + status + '"]').prop('selected', true);
-        $("#status").trigger('change');
-    }
-});
+//     if (status && character_id) {
+//         $('#modalSubscribe').find("input[name=character_id][value=" + character_id + "]").prop('checked', true);
+//         $('#modalSubscribe').find('option[value="' + status + '"]').prop('selected', true);
+//         $("#status").trigger('change');
+//     }
+// });
 
-$('#subscribe_submit').click(function(){
-    $('#formSubscribe').submit();
-});
+// $('#subscribe_submit').click(function(){
+//     $('#formSubscribe').submit();
+// });
 
 $("#status").change(function() {
     $("#headerModalSubscribe").removeClass('modal-calendar-green modal-calendar-yellow modal-calendar-red');

@@ -66,7 +66,7 @@
                             @endforeach
                         </div>
                     </div>
-                    {{-- Operation duration --}}
+                    <!-- {{-- Operation duration --}}
                     <div class="form-group">
                         <label for="known_duration" class="col-sm-3 control-label">{{ trans('calendar::seat.known_duration') }}</label>
                         <div class="col-sm-9">
@@ -77,7 +77,7 @@
                                 <input type="radio" name="known_duration" value="no" checked> {{ trans('calendar::seat.no') }}
                             </label>
                         </div>
-                    </div>
+                    </div> -->
                     {{-- Operation starts --}}
                     <div class="form-group datepicker">
                         <label for="time_start" class="col-sm-3 control-label">{{ trans('calendar::seat.starts_at') }}
@@ -87,7 +87,7 @@
                             <input type="text" class="form-control" name="time_start">
                         </div>
                     </div>
-                    {{-- Operation duration --}}
+                    <!-- {{-- Operation duration --}}
                     <div class="form-group datepicker">
                         <label for="time_start_end" class="col-sm-3 control-label">{{ trans('calendar::seat.duration') }}
                             <span class="text-danger">*</span>
@@ -95,7 +95,7 @@
                         <div class="col-sm-9">
                             <input type="text" class="form-control" name="time_start_end">
                         </div>
-                    </div>
+                    </div> -->
                     {{-- Operation staging system --}}
                     <div class="form-group">
                         <label for="staging_sys" class="col-sm-3 control-label">{{ trans('calendar::seat.staging_sys') }}</label>
