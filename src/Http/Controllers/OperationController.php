@@ -97,7 +97,7 @@ class OperationController extends Controller
         }
 
         $operation->start_at = Carbon::parse($request->time_start);
-        $operation->start_at = Carbon::parse($operation->start_at);
+        // $operation->start_at = Carbon::parse($operation->start_at);
 
         if ($request->importance == 0)
             $operation->importance = 0;
@@ -150,7 +150,7 @@ class OperationController extends Controller
             $operation->start_at = Carbon::parse($request->time_start);
             $operation->end_at = null;
 
-            $operation->start_at = Carbon::parse($operation->start_at);
+            // $operation->start_at = Carbon::parse($operation->start_at);
 
             if ($request->importance == 0)
                 $operation->importance = 0;
