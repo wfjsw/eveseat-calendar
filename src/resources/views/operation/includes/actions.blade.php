@@ -24,6 +24,13 @@
     @endif
 @endif -->
 
+@if(auth()->user()->has('calendar.updateAll', false) || $op->user->id == auth()->user()->id)
+    &nbsp;
+    <span data-toggle="tooltip" data-placement="top" title="{{ trans('calendar::seat.update') }}" class="clickable">
+        <i class="fa fa-pencil text-danger" data-toggle="modal" data-op-id="{{ $op->id }}" data-target="#modalUpdateOperation"></i>
+    </span>
+@endif
+
 @if(auth()->user()->has('calendar.cancelAll', false) || $op->user->id == auth()->user()->id)
     @if($op->is_cancelled == true)
         &nbsp;
