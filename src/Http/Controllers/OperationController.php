@@ -81,7 +81,7 @@ class OperationController extends Controller
         $this->validate($request, [
             'title' => 'required',
             'importance' => 'required|between:0,5',
-            'known_duration' => 'required',
+            // 'known_duration' => 'required',
             'time_start' => 'required|date'
         ]);
 
@@ -97,8 +97,6 @@ class OperationController extends Controller
         }
 
         $operation->start_at = Carbon::parse($request->time_start);
-        $operation->end_at = null;
-
         $operation->start_at = Carbon::parse($operation->start_at);
 
         if ($request->importance == 0)
@@ -123,7 +121,7 @@ class OperationController extends Controller
         $this->validate($request, [
             'title' => 'required',
             'importance' => 'required|between:0,5',
-            'known_duration' => 'required',
+            // 'known_duration' => 'required',
             'time_start' => 'required|date'
         ]);
 

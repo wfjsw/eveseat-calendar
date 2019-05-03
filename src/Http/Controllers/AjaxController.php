@@ -132,8 +132,10 @@ class AjaxController
             ->addRowAttr('data-attr-op', function ($row) {
                 return $row->id;
             })
-            ->rawColumns(['title', 'tags', 'importance', 'start_at', 'end_at', 'duration',
-                          'fleet_commander', 'staging_sys', 'subscription', 'actions'])
+            // ->rawColumns(['title', 'tags', 'importance', 'start_at', 'end_at', 'duration',
+            //               'fleet_commander', 'staging_sys', 'subscription', 'actions'])
+            ->rawColumns(['title', 'tags', 'importance', 'start_at', 'duration',
+                          'fleet_commander', 'staging_sys', 'actions'])
             ->make(true);
     }
 }
