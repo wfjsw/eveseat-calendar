@@ -92,9 +92,13 @@ class AjaxController
     private function buildOperationDataTable(Builder $operations)
     {
         return app('datatables')::of($operations)
+            // ->editColumn('title', function ($row) {
+            //     return sprintf('<span>%s</span><span class="pull-right">%s</span>',
+            //         $row->title, view('calendar::operation.includes.attendees', ['op' => $row]));
+            // })
             ->editColumn('title', function ($row) {
-                return sprintf('<span>%s</span><span class="pull-right">%s</span>',
-                    $row->title, view('calendar::operation.includes.attendees', ['op' => $row]));
+                return sprintf('<span>%s</span>',
+                    $row->title);
             })
             ->editColumn('tags', function ($row) {
                 return view('calendar::operation.includes.tags', ['op' => $row]);

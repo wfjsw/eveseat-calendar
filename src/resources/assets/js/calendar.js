@@ -1,11 +1,11 @@
 $('#modalCreateOperation').on('show.bs.modal', function(e) {
-    var ROUNDING = 15 * 60 * 1000;
+    var ROUNDING = 5 * 60 * 1000;
     nowRounded = moment.utc();
-    nowRounded = moment.utc(Math.ceil((+nowRounded) / ROUNDING) * ROUNDING);
+    nowRounded = moment.utc(Math.ceil((+nowRounded) / ROUNDING) * ROUNDING).add(8, 'h').subtract(20, 'm');
 
     var options = {
         timePicker: true,
-        timePickerIncrement: 1,
+        timePickerIncrement: 5,
         timePicker24Hour: true,
         // minDate: moment.utc(),
         startDate: nowRounded,
@@ -86,9 +86,9 @@ $('#modalUpdateOperation').on('show.bs.modal', function(e) {
 
     $(e.currentTarget).find('input[name="operation_id"]').val(operation_id);
 
-    var ROUNDING = 15 * 60 * 1000;
+    var ROUNDING = 5 * 60 * 1000;
     nowRounded = moment.utc();
-    nowRounded = moment.utc(Math.ceil((+nowRounded) / ROUNDING) * ROUNDING);
+    nowRounded = moment.utc(Math.ceil((+nowRounded) / ROUNDING) * ROUNDING).add(8, 'h').subtract(20, 'm');
 
 
 
@@ -119,7 +119,7 @@ $('#modalUpdateOperation').on('show.bs.modal', function(e) {
 
         var options = {
             timePicker: true,
-            timePickerIncrement: 1,
+            timePickerIncrement: 5,
             timePicker24Hour: true,
             // minDate: nowRounded,
             startDate: moment.utc(op.start_at),
