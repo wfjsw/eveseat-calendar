@@ -106,9 +106,13 @@ class AjaxController
             ->editColumn('importance', function ($row) {
                 return view('calendar::operation.includes.importance', ['op' => $row]);
             })
+            // ->editColumn('start_at', function ($row) {
+            //     return sprintf('<span data-toggle="tooltip" title="%s">%s</span>',
+            //         $row->start_at, human_diff($row->start_at));
+            // })
             ->editColumn('start_at', function ($row) {
-                return sprintf('<span data-toggle="tooltip" title="%s">%s</span>',
-                    $row->start_at, human_diff($row->start_at));
+                return sprintf('%s',
+                    $row->start_at);
             })
             // ->editColumn('end_at', function ($row) {
             //     return sprintf('<span data-toggle="tooltip" title="%s">%s</span>',
