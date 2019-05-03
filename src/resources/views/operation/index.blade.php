@@ -68,7 +68,8 @@
                 {data: 'actions', name: 'actions', orderable: false, searchable: false}
             ],
             order: [
-                [4, 'desc']
+                [3, 'desc'],
+                [1, 'asc']
             ],
             drawCallback: function () {
                 // enable tooltip
