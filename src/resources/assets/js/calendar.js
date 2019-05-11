@@ -1,7 +1,7 @@
 $('#modalCreateOperation').on('show.bs.modal', function(e) {
     var ROUNDING = 5 * 60 * 1000;
     nowRounded = moment.utc();
-    nowRounded = moment.utc(Math.ceil((+nowRounded) / ROUNDING) * ROUNDING).add(8, 'h').subtract(20, 'm');
+    nowRounded = moment.utc(Math.ceil((+nowRounded) / ROUNDING) * ROUNDING).subtract(20, 'm');
 
     var options = {
         timePicker: true,
@@ -88,7 +88,7 @@ $('#modalUpdateOperation').on('show.bs.modal', function(e) {
 
     var ROUNDING = 5 * 60 * 1000;
     nowRounded = moment.utc();
-    nowRounded = moment.utc(Math.ceil((+nowRounded) / ROUNDING) * ROUNDING).add(8, 'h').subtract(20, 'm');
+    nowRounded = moment.utc(Math.ceil((+nowRounded) / ROUNDING) * ROUNDING).subtract(20, 'm');
 
 
 
