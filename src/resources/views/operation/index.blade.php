@@ -89,32 +89,32 @@
                 $(this).find('.modal-body')
                     .load(link.replace('/0', '/' + $(e.relatedTarget).attr('data-op-id')), "", function(){
                         // attach the datatable to the loaded modal
-                        var attendees_table = $('#attendees');
+                        // var attendees_table = $('#attendees');
                         var confirmed_table = $('#confirmed');
 
-                        if (! $.fn.DataTable.isDataTable(attendees_table)) {
-                            attendees_table.DataTable({
-                                "ajax": "/calendar/lookup/attendees?id=" + $(e.relatedTarget).attr('data-op-id'),
-                                "ordering": true,
-                                "info": false,
-                                "paging": true,
-                                "processing": true,
-                                "order": [[ 1, "asc" ]],
-                                "aoColumnDefs": [
-                                    { orderable: false, targets: "no-sort" }
-                                ],
-                                "columns": [
-                                    { data: '_character' },
-                                    { data: '_status' },
-                                    { data: '_comment' },
-                                    { data: '_timestamps' }
-                                ],
-                                createdRow: function(row, data, dataIndex) {
-                                    $(row).find('td:eq(0)').attr('data-order', data._character_name);
-                                    $(row).find('td:eq(0)').attr('data-search', data._character_name);
-                                }
-                            });
-                        }
+                        // if (! $.fn.DataTable.isDataTable(attendees_table)) {
+                        //     attendees_table.DataTable({
+                        //         "ajax": "/calendar/lookup/attendees?id=" + $(e.relatedTarget).attr('data-op-id'),
+                        //         "ordering": true,
+                        //         "info": false,
+                        //         "paging": true,
+                        //         "processing": true,
+                        //         "order": [[ 1, "asc" ]],
+                        //         "aoColumnDefs": [
+                        //             { orderable: false, targets: "no-sort" }
+                        //         ],
+                        //         "columns": [
+                        //             { data: '_character' },
+                        //             { data: '_status' },
+                        //             { data: '_comment' },
+                        //             { data: '_timestamps' }
+                        //         ],
+                        //         createdRow: function(row, data, dataIndex) {
+                        //             $(row).find('td:eq(0)').attr('data-order', data._character_name);
+                        //             $(row).find('td:eq(0)').attr('data-search', data._character_name);
+                        //         }
+                        //     });
+                        // }
 
                         if (! $.fn.DataTable.isDataTable(confirmed_table)) {
                             confirmed_table.DataTable({
