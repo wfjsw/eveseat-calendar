@@ -210,7 +210,7 @@ $('#formManualRecord').submit(function (e) {
         type: "POST",
         url: `operation/${$(this).find('#operation-id').val()}/manualpaps`,
         data: {
-            characters: $(this).find('#names-list').val().split('\n').map(n => n.split('\t').filter(n => !!n).map(m => { return { character_name: m[0], ship_type: m[2] } }))
+            characters: $(this).find('#names-list').val().split('\n').filter(n => !!n).map(n => n.split('\t')).map(n => { return { character_name: n[0], ship_type: n[2] } })
         },
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

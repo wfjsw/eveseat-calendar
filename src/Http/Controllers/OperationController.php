@@ -430,7 +430,7 @@ class OperationController extends Controller
         $client = app('esi-client')->get();
         $fleet_members = request()->input('characters');
 
-        $fleet_members_character_names = array_map(function($i) {return $i->character_name;}, $fleet_members);
+        $fleet_members_character_names = array_map(function($i) {return $i['character_name'];}, $fleet_members);
 
         try {
             $names = $client->setVersion('v1')->setBody($fleet_members_character_names)->invoke('post', '/universe/ids/');
@@ -443,13 +443,13 @@ class OperationController extends Controller
             }
 
             foreach ($fleet_members as $member) {
-                if (is_null($character_name_to_id[$member->character_name])) continue;
-                $ship_type = InvType::where('typeName', $member->ship_type)->first();
+                if (is_null($character_name_to_id[$member['character_name']])) continue;
+                $ship_type = InvType::where('typeName', $member['ship_type'])->first();
                 Pap::firstOrCreate([
-                    'character_id' => $character_name_to_id[$member->character_name],
+                    'character_id' => $character_name_to_id[$member['character_name']],
                     'operation_id' => $operation_id,
                 ],[
-                    'ship_type_id' => is_null($ship_type) ? 0 : $ship_type->groupId, // Unknown
+                    'ship_type_id' => is_null($ship_type) ? 670 : $ship_type->typeID, // Unknown
                     'join_time'    => carbon()->toDateTimeString(), // Also unknown
                 ]);
             }
