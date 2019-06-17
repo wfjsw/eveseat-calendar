@@ -53,6 +53,10 @@ $('#confirm_close_submit').click(function(){
     $('#formClose').submit();
 });
 
+$('#manual_record_submit').click(function () {
+    $('#formManualRecord').submit();
+});
+
 $('#formCreateOperation').submit(function(e) {
     e.preventDefault();
 
@@ -193,6 +197,30 @@ $('#formUpdateOperation').submit(function(e) {
                 $('#modalUpdateOperation').find('.modal-errors ul').append('<li>' + value + '</li>');
             });
             $('#update_operation_submit').prop('disabled', false);
+        }
+    });
+});
+
+$('#formManualRecord').submit(function (e) {
+    e.preventDefault();
+
+    $('#manual_record_submit').prop('disabled', true);
+
+    $.ajax({
+        type: "POST",
+        url: `operation/${$(this).find('#operation-id').val()}/manualpaps`,
+        data: {
+            characters: $(this).find('#names-list').val().split('\n').map(n => n.split('\t').filter(n => !!n).map(m => { return { character_name: m[0], ship_type: m[2] } }))
+        },
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function (response) {
+            $(location).attr('href', 'operation');
+        },
+        error: function (response) {
+            window.alert('Submit failed. Please check console.');
+            $('#manual_record_submit').prop('disabled', false);
         }
     });
 });

@@ -25,6 +25,7 @@
     @include('calendar::operation.includes.modals.confirm_cancel')
     @include('calendar::operation.includes.modals.confirm_activate')
     <!-- @include('calendar::operation.includes.modals.subscribe') -->
+    @include('calendar::operation.includes.modals.manual_record')
     @include('calendar::operation.includes.modals.details')
 
     <div class="row">
@@ -76,6 +77,17 @@
             drawCallback: function () {
                 // enable tooltip
                 $('[data-toggle="tooltip"]').tooltip();
+
+                
+                $('.pap-btn').on('click', function (e) {
+                    if (e.ctrlKey) {
+                        e.preventDefault();
+                        var op_id = $(this).attr('data-op-id');
+                        $('#modalManualRecord').find('#operation-id').val(op_id);
+                        $('#modalManualRecord').find('#names-list').val('');
+                        $('#modalManualRecord').modal('show');
+                    }
+                });
 
                 // resolve EVE ids to names.
                 ids_to_names();

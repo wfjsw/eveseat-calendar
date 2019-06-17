@@ -9,6 +9,7 @@ use Seat\Eseye\Containers\EsiAuthentication;
 use Seat\Eseye\Exceptions\EsiScopeAccessDeniedException;
 use Seat\Eseye\Exceptions\RequestFailedException;
 use Seat\Eveapi\Models\RefreshToken;
+use Seat\Eveapi\Models\Sde\InvType;
 use Seat\Kassie\Calendar\Models\Pap;
 use Seat\Notifications\Models\Integration;
 use Seat\Services\Repositories\Configuration\UserRespository;
@@ -404,6 +405,81 @@ class OperationController extends Controller
         return redirect()
             ->back()
             ->with('success', 'Fleet members has been successfully papped.');
+    }
+
+    public function manualPaps(int $operation_id) {
+        $operation = Operation::find($operation_id);
+        if (is_null($operation))
+            return redirect()
+                ->back()
+                ->with('error', 'Unable to retrieve the requested operation.');
+
+        if (! $operation->isUserGranted(auth()->user()))
+            return redirect()->back()->with('error', 'You are not granted to this operation !');
+
+        if (is_null($operation->fc_character_id))
+            return redirect()
+                ->back()
+                ->with('error', 'No fleet commander has been set for this operation.');
+
+        if (! in_array($operation->fc_character_id, auth()->user()->associatedCharacterIds()->toArray()))
+            return redirect()
+                ->back()
+                ->with('error', 'You are not the fleet commander or wrong character has been set.');
+
+        $client = app('esi-client')->get();
+        $fleet_members = request()->input('characters');
+
+        $fleet_members_character_names = array_map(function($i) {return $i->character_name;}, $fleet_members);
+
+        try {
+            $names = $client->setVersion('v1')->setBody($fleet_members_character_names)->invoke('post', '/universe/ids/');
+
+            if (empty($names)) return redirect()->back()->with('error', 'Resolver returns no result.');
+
+            $character_name_to_id = array();
+            foreach ($names->characters as $member) {
+                $character_name_to_id[$member->name] = $member->id;
+            }
+
+            foreach ($fleet_members as $member) {
+                if (is_null($character_name_to_id[$member->character_name])) continue;
+                $ship_type = InvType::where('typeName', $member->ship_type)->first();
+                Pap::firstOrCreate([
+                    'character_id' => $character_name_to_id[$member->character_name],
+                    'operation_id' => $operation_id,
+                ],[
+                    'ship_type_id' => is_null($ship_type) ? 0 : $ship_type->groupId, // Unknown
+                    'join_time'    => carbon()->toDateTimeString(), // Also unknown
+                ]);
+            }
+        } catch (RequestFailedException $e) {
+
+            if ($e->getError() == 'Character is not in a fleet')
+                return redirect()
+                    ->back()
+                    ->with('error', $e->getError());
+
+            if ($e->getError() == 'The fleet does not exist or you don\'t have access to it!')
+                return redirect()
+                    ->back()
+                    ->with('error', sprintf('%s Ensure %s have the fleet boss and try again.', $e->getError(), $operation->fc));
+
+            return redirect()
+                ->back()
+                ->with('error', 'Esi respond with an unhandled error : (' . $e->getCode() . ') ' . $e->getError());
+        } catch (EsiScopeAccessDeniedException $e) {
+
+            return redirect()
+                ->back()
+                ->with('error', 'Registered tokens has not enough privileges. '.
+                                'Please bind your character and pap again.');
+        }
+
+        return redirect()
+            ->back()
+            ->with('success', 'Fleet members has been successfully papped.');
+
     }
 
     /**

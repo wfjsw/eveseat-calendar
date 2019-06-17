@@ -59,6 +59,8 @@ return [
     'attendees'                    => 'Attendees',
     'confirmed'                    => 'Confirmed',
 
+    'manual_recording'             => 'Manual PAP Recording',
+
     'month'  => 'month|months',
     'day'    => 'day|days',
     'hour'   => 'hour|hours',
