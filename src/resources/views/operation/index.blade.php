@@ -62,7 +62,7 @@
             dom: 'rt<"col-sm-5"i><"col-sm-7"p>',
             columns: [
                 {data: 'title', name: 'title'},
-                {data: 'tags', name: 'tags', orderable: false},
+                // {data: 'tags', name: 'tags', orderable: false},
                 // {data: 'importance', name: 'importance'},
                 {data: 'pap_count', name: 'pap_count'},
                 {data: 'start_at', name: 'start_at'},
@@ -73,7 +73,7 @@
                 {data: 'actions', name: 'actions', orderable: false, searchable: false}
             ],
             order: [
-                [3, 'desc']
+                [2, 'desc']
             ],
             drawCallback: function () {
                 // enable tooltip
