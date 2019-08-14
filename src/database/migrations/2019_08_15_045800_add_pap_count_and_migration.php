@@ -22,6 +22,7 @@ class AddPapCountAndMigration extends Migration {
         Operation::chunk(100, function ($ops) {
             foreach ($ops as $op) {
                 $op->pap_count = $op->tags->max('quantifier');
+                if (is_null($op->pap_count)) $op->pap_count = 1.0;
                 $op->save();
             }
         });
