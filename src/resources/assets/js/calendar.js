@@ -27,6 +27,13 @@ $('#modalCreateOperation').on('show.bs.modal', function(e) {
                 return value;
             }
         });
+    
+    if ($('#sliderPapCount').length <= 0)
+        $('#modalCreateOperation').find('input[name="pap_count"]').slider({
+            formatter: function (value) {
+                return value;
+            }
+        });
 });
 
 $('#modalCreateOperation').find('input[name="known_duration"]:radio').change(function () {
@@ -110,16 +117,16 @@ $('#modalUpdateOperation').on('show.bs.modal', function(e) {
         }
 
         $('#modalUpdateOperation').find('option[value="' + op.type + '"]').prop('selected', true);
-        $('#modalUpdateOperation').find('input[name="staging_sys"]').val(op.staging_sys);
-        $('#modalUpdateOperation').find('input[name="staging_sys_id"]').val(op.staging_sys_id);
-        $('#modalUpdateOperation').find('input[name="staging_info"]').val(op.staging_info);
+        // $('#modalUpdateOperation').find('input[name="staging_sys"]').val(op.staging_sys);
+        // $('#modalUpdateOperation').find('input[name="staging_sys_id"]').val(op.staging_sys_id);
+        // $('#modalUpdateOperation').find('input[name="staging_info"]').val(op.staging_info);
         $('#modalUpdateOperation').find('input[name="fc"]').val(op.fc);
         $('#modalUpdateOperation').find('input[name="fc_character_id"]').val(op.fc_character_id);
         $('#modalUpdateOperation').find('textarea[name="description"]').val(op.description);
 
-        $.each(op.tags, function(i, tag) {
-            $('#checkbox-update-' + tag.id).prop('checked', true);
-        });
+        // $.each(op.tags, function(i, tag) {
+        //     $('#checkbox-update-' + tag.id).prop('checked', true);
+        // });
 
         var options = {
             timePicker: true,
@@ -150,12 +157,16 @@ $('#modalUpdateOperation').on('show.bs.modal', function(e) {
         // }
         // $('#modalUpdateOperation').find('input[name="time_start_end"]').daterangepicker(options);
 
-        if ($('#updateSliderImportance').length > 0) {
-            $('#modalUpdateOperation').find('input[name="importance"]').slider('destroy');
+        // if ($('#updateSliderImportance').length > 0) {
+        //     $('#modalUpdateOperation').find('input[name="importance"]').slider('destroy');
+        // }
+
+        if ($('#updateSliderPapCount').length > 0) {
+            $('#modalUpdateOperation').find('input[name="pap_count"]').slider('destroy');
         }
 
-        $('#modalUpdateOperation').find('input[name="importance"]').attr('data-slider-value', op.importance);
-        $('#modalUpdateOperation').find('input[name="importance"]').slider({
+        $('#modalUpdateOperation').find('input[name="pap_count"]').attr('data-slider-value', op.pap_count);
+        $('#modalUpdateOperation').find('input[name="pap_count"]').slider({
             formatter: function(value) {
                 return value;
             }

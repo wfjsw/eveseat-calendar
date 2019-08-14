@@ -99,6 +99,7 @@ return [
     'staging_info'    => 'Staging info',
     'fleet_commander' => 'Fleet Commander',
     'character'       => 'Character',
+    'pap_count'       => 'Pap Count',
 
     'notification_new_operation'      => '<!channel> :rocket: A new operation has been posted !',
     'notification_edit_operation'     => '<!channel> :pencil2: An operation has been edited !',

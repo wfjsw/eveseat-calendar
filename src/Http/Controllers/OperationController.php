@@ -46,9 +46,9 @@ class OperationController extends Controller
     {
         $notification_channels = Integration::where('type', 'slack')->get();
 
-        $ops = Operation::all()->take(-50)->filter(function($op){
-            return $op->isUserGranted(auth()->user());
-        });
+        // $ops = Operation::all()->take(-50)->filter(function($op){
+        //     return $op->isUserGranted(auth()->user());
+        // });
 
         $tags = Tag::all()->sortBy('order');
 
@@ -67,7 +67,7 @@ class OperationController extends Controller
         return view('calendar::operation.index', [
             'roles'          => $roles,
             'userCharacters' => $userCharacters,
-            'ops_all' => $ops,
+            // 'ops_all' => $ops,
             'default_op' => $request->id ? $request->id : 0,
             'tags' => $tags,
             'notification_channels' => $notification_channels,
@@ -81,7 +81,8 @@ class OperationController extends Controller
     {
         $this->validate($request, [
             'title' => 'required',
-            'importance' => 'required|between:0,5',
+            // 'importance' => 'required|between:0,5',
+            'pap_count' => 'required|between:0.5,8',
             // 'known_duration' => 'required',
             'time_start' => 'required|date'
         ]);
@@ -100,8 +101,14 @@ class OperationController extends Controller
         $operation->start_at = Carbon::parse($request->time_start);
         // $operation->start_at = Carbon::parse($operation->start_at);
 
-        if ($request->importance == 0)
-            $operation->importance = 0;
+        $operation->importance = 2;
+        if ( !(auth()->user()->has('calendar.updateAll', false)) ) {
+            $operation->fc              = auth()->user()->name;
+            $operation->fc_character_id = auth()->user()->id;
+        }
+
+        // if ($request->importance == 0)
+        //     $operation->importance = 0;
 
         $operation->integration_id = ($request->get('integration_id') == "") ?
             null : $request->get('integration_id');
@@ -110,7 +117,7 @@ class OperationController extends Controller
 
         $operation->save();
 
-        $operation->tags()->attach($tags);
+        // $operation->tags()->attach($tags);
     }
 
     /**
@@ -121,7 +128,8 @@ class OperationController extends Controller
     {
         $this->validate($request, [
             'title' => 'required',
-            'importance' => 'required|between:0,5',
+            // 'importance' => 'required|between:0,5',
+            'pap_count' => 'required|between:0.5,8',
             // 'known_duration' => 'required',
             'time_start' => 'required|date'
         ]);
@@ -140,28 +148,33 @@ class OperationController extends Controller
 
             $operation->title           = $request->title;
             $operation->role_name       = ($request->role_name == "") ? null : $request->role_name;
-            $operation->importance      = $request->importance;
+            $operation->importance      = 2; // $request->importance;
+            $operation->pap_count       = $request->pap_count;
             $operation->description     = $request->description;
-            $operation->staging_sys     = $request->staging_sys;
-            $operation->staging_info    = $request->staging_info;
-            $operation->staging_sys_id  = $request->staging_sys_id == null ? null : $request->staging_sys_id;
-            $operation->fc              = $request->fc;
-            $operation->fc_character_id = $request->fc_character_id == null ? null : $request->fc_character_id;
+            $operation->staging_sys     = null; // $request->staging_sys;
+            $operation->staging_info    = null; // $request->staging_info;
+            $operation->staging_sys_id  = null; // $request->staging_sys_id == null ? null : $request->staging_sys_id;
+            $operation->fc              = auth()->user()->has('calendar.updateAll', false) ? $request->fc : auth()->user()->name ;
+            $operation->fc_character_id = auth()->user()->has('calendar.updateAll', false) ? ($request->fc_character_id == null ? null : $request->fc_character_id) : auth()->user()->id;
 
             $operation->start_at = Carbon::parse($request->time_start);
             $operation->end_at = null;
 
             // $operation->start_at = Carbon::parse($operation->start_at);
 
-            if ($request->importance == 0)
-                $operation->importance = 0;
+            // if ($request->importance == 0)
+            //     $operation->importance = 0;
 
             $operation->integration_id = ($request->get('integration_id') == "") ?
                 null : $request->get('integration_id');
 
             $operation->save();
 
-            $operation->tags()->sync($tags);
+            // $operation->tags()->sync($tags);
+
+            // Mass update pap count
+            Pap::where('operation_id', $request->operation_id)
+                ->update(['value' => $operation->pap_count]);
 
             return $operation;
         }
@@ -365,7 +378,7 @@ class OperationController extends Controller
             ]);
 
             foreach ($members as $member) {
-                Pap::firstOrCreate([
+                Pap::updateOrCreate([
                     'character_id' => $member->character_id,
                     'operation_id' => $operation_id,
                 ],[

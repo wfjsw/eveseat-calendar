@@ -32,6 +32,7 @@ class Operation extends Model
         'start_at',
         'end_at',
         'importance',
+        'pap_count',
         'integration_id',
         'description',
         'description_new',

@@ -56,7 +56,8 @@ class Pap extends Model {
             $this->setAttribute('value', 0);
 
         if (! is_null($operation) && $operation->tags->count() > 0)
-            $this->setAttribute('value', $operation->tags->max('quantifier'));
+            $this->setAttribute('value', $operation->pap_count);
+            // $this->setAttribute('value', $operation->tags->max('quantifier'));
 
         if (array_key_exists('join_time', $this->attributes)) {
             $dt = carbon($this->getAttributeValue('join_time'));

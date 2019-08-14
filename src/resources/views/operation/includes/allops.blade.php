@@ -5,10 +5,11 @@
                 <tr>
                     <th>{{ trans('calendar::seat.title') }}</th>
                     <th class="hidden-xs">{{ trans('calendar::seat.tags') }}</th>
-                    <th>{{ trans('calendar::seat.importance') }}</th>
+                    {{-- <th>{{ trans('calendar::seat.importance') }}</th> --}}
+                    <th class="hidden-xs">{{ trans('calendar::seat.pap_count') }}</th>
                     <th class="hidden-xs">{{ trans('calendar::seat.started_at') }}</th>
                     <th class="hidden-xs">{{ trans('calendar::seat.fleet_commander') }}</th>
-                    <th>{{ trans('calendar::seat.staging') }}</th>
+                    {{-- <th>{{ trans('calendar::seat.staging') }}</th> --}}
                     <th class="hidden-xs"></th>
                 </tr>
             </thead>

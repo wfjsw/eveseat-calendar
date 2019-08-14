@@ -24,7 +24,7 @@
                         </div>
                     </div>
                     {{-- Operation role restriction --}}
-                    <div class="form-group">
+                    {{-- <div class="form-group">
                         <label for="update_operation_role" class="col-sm-3 control-label">{{ trans_choice('web::seat.role', 1) }}</label>
                         <div class="col-sm-9">
                             <select name="role_name" id="update_operation_role" style="width: 100%">
@@ -34,9 +34,9 @@
                                 @endforeach
                             </select>
                         </div>
-                    </div>
+                    </div> --}}
                     {{-- Operation importance --}}
-                    <div class="form-group">
+                    {{-- <div class="form-group">
                         <label for="importance" class="col-sm-3 control-label">{{ trans('calendar::seat.importance') }}
                             <span class="text-danger">*</span>
                         </label>
@@ -45,9 +45,20 @@
                                    data-slider-step="0.5" data-slider-value="2" data-slider-id="updateSliderImportance"
                                    data-slider-tooltip="show" data-slider-handle="round" name="importance"/>
                         </div>
+                    </div> --}}
+                    {{-- Operation Pap Count --}}
+                    <div class="form-group">
+                        <label for="pap_count" class="col-sm-3 control-label">{{ trans('calendar::seat.pap_count') }}
+                            <span class="text-danger">*</span>
+                        </label>
+                        <div class="col-sm-9">
+                            <input type="text" class="slider form-control" value="1" data-slider-min="0.5" data-slider-max="8"
+                                   data-slider-step="0.5" data-slider-value="1" data-slider-id="updateSliderPapCount"
+                                   data-slider-tooltip="show" data-slider-handle="round" name="pap_count"/>
+                        </div>
                     </div>
                     {{-- Operation tags --}}
-                    <div class="form-group">
+                    {{-- <div class="form-group">
                         <label class="col-sm-3 control-label">{{ trans('calendar::seat.tags') }}</label>
                         <div class="col-sm-9">
                             @foreach($tags->chunk(4) as $tags)
@@ -65,9 +76,9 @@
                                 </div>
                             @endforeach
                         </div>
-                    </div>
-                    <!-- {{-- Operation duration --}}
-                    <div class="form-group">
+                    </div> --}}
+                    {{-- Operation duration --}}
+                    {{-- <div class="form-group">
                         <label for="known_duration" class="col-sm-3 control-label">{{ trans('calendar::seat.known_duration') }}</label>
                         <div class="col-sm-9">
                             <label class="radio-inline">
@@ -77,7 +88,7 @@
                                 <input type="radio" name="known_duration" value="no" checked> {{ trans('calendar::seat.no') }}
                             </label>
                         </div>
-                    </div> -->
+                    </div> --}}
                     {{-- Operation starts --}}
                     <div class="form-group datepicker">
                         <label for="time_start" class="col-sm-3 control-label">{{ trans('calendar::seat.starts_at') }}
@@ -87,33 +98,34 @@
                             <input type="text" class="form-control" name="time_start">
                         </div>
                     </div>
-                    <!-- {{-- Operation duration --}}
-                    <div class="form-group datepicker">
+                    {{-- Operation duration --}}
+                    {{-- <div class="form-group datepicker">
                         <label for="time_start_end" class="col-sm-3 control-label">{{ trans('calendar::seat.duration') }}
                             <span class="text-danger">*</span>
                         </label>
                         <div class="col-sm-9">
                             <input type="text" class="form-control" name="time_start_end">
                         </div>
-                    </div> -->
+                    </div> --}}
                     {{-- Operation staging system --}}
-                    <div class="form-group">
+                    {{-- <div class="form-group">
                         <label for="staging_sys" class="col-sm-3 control-label">{{ trans('calendar::seat.staging_sys') }}</label>
                         <div class="col-sm-9">
                             <input type="text" class="form-control" name="staging_sys"
                                    placeholder="{{ trans('calendar::seat.placeholder_staging_sys') }}">
                             <input type="hidden" name="staging_sys_id">
                         </div>
-                    </div>
+                    </div> --}}
                     {{-- Operation staging info --}}
-                    <div class="form-group">
+                    {{-- <div class="form-group">
                         <label for="staging_info" class="col-sm-3 control-label">{{ trans('calendar::seat.staging_info') }}</label>
                         <div class="col-sm-9">
                             <input type="text" class="form-control" name="staging_info"
                                    placeholder="{{ trans('calendar::seat.placeholder_staging_info') }}">
                         </div>
-                    </div>
+                    </div> --}}
                     {{-- Operation FC --}}
+                    @if(auth()->user()->has('calendar.updateAll', false))
                     <div class="form-group">
                         <label for="fc" class="col-sm-3 control-label">{{ trans('calendar::seat.fleet_commander') }}</label>
                         <div class="col-sm-9">
@@ -122,6 +134,7 @@
                             <input type="hidden" name="fc_character_id">
                         </div>
                     </div>
+                    @endif
                     {{-- Operation description --}}
                     <div class="form-group">
                         <label for="description" class="col-sm-3 control-label">{{ trans('calendar::seat.description') }}</label>

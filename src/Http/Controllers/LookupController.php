@@ -5,6 +5,7 @@ namespace Seat\Kassie\Calendar\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Seat\Eveapi\Models\Character\CharacterInfo;
+use Seat\Eveapi\Models\Corporation\CorporationInfo;
 use Seat\Kassie\Calendar\Models\Pap;
 use Seat\Web\Http\Controllers\Controller;
 use Seat\Kassie\Calendar\Models\Attendee;
@@ -64,6 +65,8 @@ class LookupController extends Controller
                 return view('calendar::operation.includes.cols.attendees.character', compact('row'))->render();
             })
             ->addColumn('_character_name', function ($row) {
+                if (is_null($row->character))
+                    return '';
                 return $row->character->name;
             })
             ->addColumn('_status', function ($row) {
@@ -78,30 +81,54 @@ class LookupController extends Controller
 
     public function lookupConfirmed(Request $request)
     {
-        $confirmed = Pap::with([
-                'character:character_id,name,corporation_id',
-                'user:id,group_id',
-                'user.group:id',
-                'type:typeID,typeName,groupID',
-                'type.group:groupID,groupName'
-            ])
-            ->where('operation_id', $request->input('id'))
-            ->select('character_id', 'ship_type_id')
-            ->get();
+        if (auth()->user()->has('calendar.create', false)) {
+            $confirmed = Pap::with([
+                    'character:character_id,name,corporation_id',
+                    'user:id,group_id',
+                    'user.group:id',
+                    'type:typeID,typeName,groupID',
+                    'type.group:groupID,groupName'
+                ])
+                ->where('operation_id', $request->input('id'));
+                // ->select('character_id', 'ship_type_id')
+                // ->get();
 
-        return app('DataTables')::collection($confirmed)
-            ->removeColumn('ship_type_id', 'character_id')
-            ->editColumn('character.character_id', function ($row) {
-                return view('calendar::operation.includes.cols.confirmed.character', compact('row'))->render();
-            })
-            ->editColumn('character.corporation_id', function ($row) {
-                return view('calendar::operation.includes.cols.confirmed.corporation', compact('row'))->render();
-            })
-            ->editColumn('type.typeID', function ($row) {
-                return view('calendar::operation.includes.cols.confirmed.ship', compact('row'))->render();
-            })
-            ->rawColumns(['character.character_id', 'character.corporation_id', 'type.typeID'])
-            ->make(true);
+            return app('DataTables')::of($confirmed)
+                // ->removeColumn('ship_type_id', 'character_id')
+                ->editColumn('character.character_id', function ($row) {
+                    return view('calendar::operation.includes.cols.confirmed.character', compact('row'))->render();
+                })
+                ->editColumn('character.corporation_id', function ($row) {
+                    if (! is_null($row->character)) $row->corporation = CorporationInfo::find($row->character->corporation_id);
+                    return view('calendar::operation.includes.cols.confirmed.corporation', compact('row'))->render();
+                })
+                ->editColumn('type.typeID', function ($row) {
+                    return view('calendar::operation.includes.cols.confirmed.ship', compact('row'))->render();
+                })
+                ->rawColumns(['character.character_id', 'character.corporation_id', 'type.typeID'])
+                ->make(true);
+        } else {
+            $confirmed = Pap::with([
+                    'character:character_id,name,corporation_id',
+                    'user:id,group_id',
+                    'user.group:id'
+                ])
+                ->where('operation_id', $request->input('id'));
+                // ->select('character_id', 'ship_type_id')
+                // ->get();
+
+            return app('DataTables')::of($confirmed)
+                ->editColumn('character.character_id', function ($row) {
+                    return view('calendar::operation.includes.cols.confirmed.character', compact('row'))->render();
+                })
+                ->editColumn('character.corporation_id', function ($row) {
+                    if (! is_null($row->character)) $row->corporation = CorporationInfo::find($row->character->corporation_id);
+                    return view('calendar::operation.includes.cols.confirmed.corporation', compact('row'))->render();
+                })
+                ->rawColumns(['character.character_id', 'character.corporation_id'])
+                ->make(true);
+        }
+
     }
 
 }

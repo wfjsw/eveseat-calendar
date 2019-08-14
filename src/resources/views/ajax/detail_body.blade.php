@@ -1,5 +1,5 @@
 <h2>{{ $op->title }}
-    <span class="pull-right">@include('calendar::operation.includes.importance')</span>
+    {{-- <span class="pull-right">@include('calendar::operation.includes.importance')</span> --}}
 </h2>
 
 <div class="row">
@@ -13,9 +13,18 @@
                     <div class="col-md-6">
                         <ul class="list-group no-margin">
 
-                            <li class="list-group-item no-border">
+                            {{-- <li class="list-group-item no-border">
                                 <b>{{ trans('calendar::seat.tags') }}</b> :
                                 @include('calendar::operation.includes.tags', ['chunk' => false])
+                            </li> --}}
+
+                            <li class="list-group-item no-border">
+                                <b>{{ trans('calendar::seat.pap_count') }}</b> :
+                                @if($op->pap_count)
+                                    {{ $op->pap_count }}
+                                @else
+                                    1
+                                @endif
                             </li>
 
                             <li class="list-group-item no-border">
@@ -27,7 +36,7 @@
                                 @endif
                             </li>
 
-                            <li class="list-group-item no-border">
+                            {{-- <li class="list-group-item no-border">
                                 <b>{{ trans('calendar::seat.staging') }}</b> :
                                 @if($op->staging_sys_id)
                                     @include('calendar::operation.includes.staging')
@@ -43,14 +52,14 @@
                                 @else
                                     <i>{{ trans('calendar::seat.unknown') }}</i>
                                 @endif
-                            </li>
+                            </li> --}}
 
                         </ul>
                     </div>
                     <div class="col-md-6">
                         <ul class="list-group no-margin">
                             <li class="list-group-item no-border"><b>{{ trans('calendar::seat.starts_at') }}</b> : {{ $op->start_at }}</li>
-                            <li class="list-group-item no-border">
+                            {{-- <li class="list-group-item no-border">
                                 <b>{{ trans('calendar::seat.ends_at') }}</b> :
                                 @if($op->end_at)
                                     {{ $op->end_at }}
@@ -65,7 +74,7 @@
                                 @else
                                     <i>{{ trans('calendar::seat.unknown') }}</i>
                                 @endif
-                            </li>
+                            </li> --}}
                             <li class="list-group-item no-border">
                                 <b>{{ trans('calendar::seat.direct_link') }}</b> :
                                 <a href="{{ url('/calendar/operation', [$op->id]) }}">{{ url('/calendar/operation', [$op->id]) }}</a>
@@ -93,7 +102,7 @@
     </div>
 </div>
 
-<!-- <div class="row">
+{{-- <div class="row">
     <div class="col-md-12">
         <div class="box box-solid no-border no-shadow">
             <div class="box-header with-border">
@@ -122,7 +131,7 @@
             </div>
         </div>
     </div>
-</div> -->
+</div> --}}
 
 <div class="row">
     <div class="col-md-12">
@@ -136,8 +145,10 @@
                         <tr>
                             <th>{{ trans_choice('web::seat.character', 1) }}</th>
                             <th>{{ trans_choice('web::seat.corporation', 1) }}</th>
+                        @if(auth()->user()->has('calendar.create', false))
                             <th>{{ trans('web::seat.ship_type') }}</th>
                             <th>{{ trans_choice('web::seat.group', 1) }}</th>
+                        @endif
                         </tr>
                     </thead>
                     <tbody></tbody>

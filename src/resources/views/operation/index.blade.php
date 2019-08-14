@@ -24,7 +24,7 @@
     @include('calendar::operation.includes.modals.confirm_close')
     @include('calendar::operation.includes.modals.confirm_cancel')
     @include('calendar::operation.includes.modals.confirm_activate')
-    <!-- @include('calendar::operation.includes.modals.subscribe') -->
+    {{-- @include('calendar::operation.includes.modals.subscribe') --}}
     @include('calendar::operation.includes.modals.manual_record')
     @include('calendar::operation.includes.modals.details')
 
@@ -63,11 +63,12 @@
             columns: [
                 {data: 'title', name: 'title'},
                 {data: 'tags', name: 'tags', orderable: false},
-                {data: 'importance', name: 'importance'},
+                // {data: 'importance', name: 'importance'},
+                {data: 'pap_count', name: 'pap_count'},
                 {data: 'start_at', name: 'start_at'},
                 // {data: 'end_at', name: 'end_at'},
                 {data: 'fleet_commander', name: 'fleet_commander', orderable: false},
-                {data: 'staging_sys', name: 'staging_sys'},
+                // {data: 'staging_sys', name: 'staging_sys'},
                 // {data: 'subscription', name: 'subscription', orderable: false},
                 {data: 'actions', name: 'actions', orderable: false, searchable: false}
             ],
@@ -99,7 +100,8 @@
                 var link = '{{ route('operation.detail', 0) }}';
                 // load detail content dynamically
                 $(this).find('.modal-body')
-                    .load(link.replace('/0', '/' + $(e.relatedTarget).attr('data-op-id')), "", function(){
+                    .html('Loading...')
+                    .load(link.replace(/0$/gi, $(e.relatedTarget).attr('data-op-id')), "", function(){
                         // attach the datatable to the loaded modal
                         // var attendees_table = $('#attendees');
                         var confirmed_table = $('#confirmed');
@@ -147,8 +149,10 @@
                                 "columns": [
                                     { data: 'character.character_id'},
                                     { data: 'character.corporation_id'},
+                                @if(auth()->user()->has('calendar.create', false))
                                     { data: 'type.typeID'},
-                                    { data: 'type.group.groupName'}
+                                    { data: 'type.group.groupName'},
+                                @endif
                                 ],
                                 createdRow: function(row, data, dataIndex) {
                                     $(row).find('td:eq(0)').attr('data-order', data.character.character_id);
@@ -159,7 +163,7 @@
                     });
             })
             .on('hidden.bs.modal', function(e) {
-                var table = $(this).find('#attendees').DataTable();
+                var table = $(this).find('#confirmed').DataTable();
                 table.destroy();
             });
 
