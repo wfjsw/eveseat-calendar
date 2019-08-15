@@ -9,6 +9,7 @@ namespace Seat\Kassie\Calendar\Http\Controllers;
 
 use Illuminate\Database\Eloquent\Builder;
 use Seat\Kassie\Calendar\Models\Operation;
+use Seat\Kassie\Calendar\Models\Pap;
 
 /**
  * Class AjaxController.
@@ -22,7 +23,8 @@ class AjaxController
      */
     public function getAllOps()
     {
-        $operations = Operation::with('tags', 'fleet_commander', 'attendees');
+        // $operations = Operation::with('tags', 'fleet_commander', 'attendees');
+        $operations = Operation::with('fleet_commander');
 
         return $this->buildOperationDataTable($operations);
     }
@@ -92,6 +94,13 @@ class AjaxController
     private function buildOperationDataTable(Builder $operations)
     {
         return app('datatables')::of($operations)
+            ->addColumn('participated', function ($row) {
+                $participation = Pap::where('operation_id', $row->id)
+                    ->whereIn('character_id', auth()->user()->group->users->pluck('id')->toArray())
+                    ->first();
+                
+                return !is_null($participation);
+            })
             // ->editColumn('title', function ($row) {
             //     return sprintf('<span>%s</span><span class="pull-right">%s</span>',
             //         $row->title, view('calendar::operation.includes.attendees', ['op' => $row]));

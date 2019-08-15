@@ -52,7 +52,7 @@
                             <span class="text-danger">*</span>
                         </label>
                         <div class="col-sm-9">
-                            <input type="text" class="slider form-control" value="1" data-slider-min="0.5" data-slider-max="8"
+                            <input type="text" class="slider form-control" value="1" data-slider-min="0.5" data-slider-max="5"
                                    data-slider-step="0.5" data-slider-value="1" data-slider-id="updateSliderPapCount"
                                    data-slider-tooltip="show" data-slider-handle="round" name="pap_count"/>
                         </div>

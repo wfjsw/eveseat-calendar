@@ -82,7 +82,7 @@ class OperationController extends Controller
         $this->validate($request, [
             'title' => 'required',
             // 'importance' => 'required|between:0,5',
-            'pap_count' => 'required|between:0.5,8',
+            'pap_count' => 'required|between:0.5,5',
             // 'known_duration' => 'required',
             'time_start' => 'required|date'
         ]);
@@ -129,7 +129,7 @@ class OperationController extends Controller
         $this->validate($request, [
             'title' => 'required',
             // 'importance' => 'required|between:0,5',
-            'pap_count' => 'required|between:0.5,8',
+            'pap_count' => 'required|between:0.5,5',
             // 'known_duration' => 'required',
             'time_start' => 'required|date'
         ]);
@@ -198,6 +198,10 @@ class OperationController extends Controller
                     return redirect()->back()->with('error', 'You are not granted to this operation !');
 
                 Operation::destroy($operation->id);
+
+                // Remove relevent paps as well
+
+                Pap::where('operation_id', $operation->id)->delete();
                 return redirect()->route('operation.index');
             }
         }
@@ -458,7 +462,7 @@ class OperationController extends Controller
             foreach ($fleet_members as $member) {
                 if (is_null($character_name_to_id[$member['character_name']])) continue;
                 $ship_type = InvType::where('typeName', $member['ship_type'])->first();
-                Pap::firstOrCreate([
+                Pap::updateOrCreate([
                     'character_id' => $character_name_to_id[$member['character_name']],
                     'operation_id' => $operation_id,
                 ],[

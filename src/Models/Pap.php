@@ -55,7 +55,8 @@ class Pap extends Model {
         if (is_null($this->getAttributeValue('value')))
             $this->setAttribute('value', 0);
 
-        if (! is_null($operation) && $operation->tags->count() > 0)
+        // if (! is_null($operation) && $operation->tags->count() > 0)
+        if (! is_null($operation) && $operation->pap_count > 0)
             $this->setAttribute('value', $operation->pap_count);
             // $this->setAttribute('value', $operation->tags->max('quantifier'));
 

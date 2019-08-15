@@ -53,27 +53,30 @@
         $('#calendar-allops').DataTable({
             processing: true,
             serverSide: true,
+            searching: false,
+            responsive: true,
             ajax: {
                 url: '{{ route('operation.allops') }}'
             },
             pageLength: 50,
             lengthChange: true,
             lengthMenu: [ 15, 30, 50, 75, 100, 200, 300 ],
-            dom: 'rt<"col-sm-5"i><"col-sm-7"p>',
+            // dom: 'rt<"col-sm-5"i><"col-sm-7"p>',
             columns: [
-                {data: 'title', name: 'title'},
+                {data: 'participated', name: 'participated', searchable: false, orderable: false, responsivePriority: 1, render: (data) => data ? '<i class="fa fa-check text-success" aria-hidden="true"></i>' : '<i class="fa fa-times text-danger" aria-hidden="true"></i>' },
+                {data: 'title', name: 'title', responsivePriority: 1},
                 // {data: 'tags', name: 'tags', orderable: false},
                 // {data: 'importance', name: 'importance'},
-                {data: 'pap_count', name: 'pap_count'},
-                {data: 'start_at', name: 'start_at'},
+                {data: 'pap_count', name: 'pap_count', responsivePriority: 1},
+                {data: 'start_at', name: 'start_at', responsivePriority: 2},
                 // {data: 'end_at', name: 'end_at'},
-                {data: 'fleet_commander', name: 'fleet_commander', orderable: false},
+                {data: 'fleet_commander', name: 'fleet_commander', orderable: false, responsivePriority: 2},
                 // {data: 'staging_sys', name: 'staging_sys'},
                 // {data: 'subscription', name: 'subscription', orderable: false},
-                {data: 'actions', name: 'actions', orderable: false, searchable: false}
+                {data: 'actions', name: 'actions', orderable: false, searchable: false, responsivePriority: 2}
             ],
             order: [
-                [2, 'desc']
+                [3, 'desc']
             ],
             drawCallback: function () {
                 // enable tooltip
