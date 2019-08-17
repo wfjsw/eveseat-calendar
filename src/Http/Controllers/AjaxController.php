@@ -105,10 +105,10 @@ class AjaxController
             //     return sprintf('<span>%s</span><span class="pull-right">%s</span>',
             //         $row->title, view('calendar::operation.includes.attendees', ['op' => $row]));
             // })
-            ->editColumn('title', function ($row) {
-                return sprintf('<span>%s</span>',
-                    $row->title);
-            })
+            // ->editColumn('title', function ($row) {
+            //     return sprintf('<span>%s</span>',
+            //         $row->title);
+            // })
             ->editColumn('tags', function ($row) {
                 return view('calendar::operation.includes.tags', ['op' => $row]);
             })
@@ -130,10 +130,10 @@ class AjaxController
             ->editColumn('fleet_commander', function ($row) {
                 return view('calendar::operation.includes.fleet_commander', ['op' => $row]);
             })
-            ->addColumn('duration', function ($row) {
-                return sprintf('<span data-toggle="tooltip" title="%s">%s</span>',
-                    $row->end_at, $row->duration);
-            })
+            // ->addColumn('duration', function ($row) {
+            //     return sprintf('<span data-toggle="tooltip" title="%s">%s</span>',
+            //         $row->end_at, $row->duration);
+            // })
             // ->editColumn('staging_sys', function ($row) {
             //     return view('calendar::operation.includes.staging', ['op' => $row]);
             // })
@@ -151,8 +151,7 @@ class AjaxController
             })
             // ->rawColumns(['title', 'tags', 'importance', 'start_at', 'end_at', 'duration',
             //               'fleet_commander', 'staging_sys', 'subscription', 'actions'])
-            ->rawColumns(['title', 'tags', 'importance', 'start_at', 'duration',
-                          'fleet_commander', 'actions'])
+            ->rawColumns(['start_at', fleet_commander', 'actions'])
             ->make(true);
     }
 }
