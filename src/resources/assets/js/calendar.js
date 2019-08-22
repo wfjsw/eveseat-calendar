@@ -120,8 +120,11 @@ $('#modalUpdateOperation').on('show.bs.modal', function(e) {
         // $('#modalUpdateOperation').find('input[name="staging_sys"]').val(op.staging_sys);
         // $('#modalUpdateOperation').find('input[name="staging_sys_id"]').val(op.staging_sys_id);
         // $('#modalUpdateOperation').find('input[name="staging_info"]').val(op.staging_info);
-        $('#modalUpdateOperation').find('input[name="fc"]').val(op.fc);
-        $('#modalUpdateOperation').find('input[name="fc_character_id"]').val(op.fc_character_id);
+        // $('#modalUpdateOperation').find('input[name="fc"]').val(op.fc);
+        // $('#modalUpdateOperation').find('input[name="fc_character_id"]').val(op.fc_character_id);
+        var option = $('<option selected></option>').val(op.fc_character_id).text(op.fc);
+        $('#modalUpdateOperation').find('select#fc_character_id').append(option).trigger('change'); // append the option and update Select2
+        
         $('#modalUpdateOperation').find('textarea[name="description"]').val(op.description);
 
         // $.each(op.tags, function(i, tag) {

@@ -132,9 +132,9 @@
                         </div>
                     </div> --}}
                     <div class="form-group">
-                        <label for="fc_character_id" class="col-sm-3 control-label">Characters</label>
+                        <label for="fc_character_id" class="col-sm-3 control-label">{{ trans('calendar::seat.fleet_commander') }}</label>
                         <div class="col-sm-9">
-                            <select id='fc_character_id' name="fc_character_id"></select>
+                            <select id='fc_character_id' name="fc_character_id" style="width: 100%;"></select>
                         </div>
                     </div>
                     {{-- Operation description --}}

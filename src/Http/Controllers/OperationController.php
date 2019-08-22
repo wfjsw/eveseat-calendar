@@ -86,7 +86,7 @@ class OperationController extends Controller
             'pap_count' => 'required|between:0.5,5',
             // 'known_duration' => 'required',
             'time_start' => 'required|date',
-            'fc' => 'required'
+            'fc_character_id' => 'required',
         ]);
 
         $operation = new Operation($request->all());
@@ -140,7 +140,8 @@ class OperationController extends Controller
             // 'importance' => 'required|between:0,5',
             'pap_count' => 'required|between:0.5,5',
             // 'known_duration' => 'required',
-            'time_start' => 'required|date'
+            'time_start' => 'required|date',
+            'fc_character_id' => 'required',
         ]);
 
         $operation = Operation::find($request->operation_id);
