@@ -277,18 +277,18 @@ $('#modalConfirmDelete, #modalConfirmClose, #modalConfirmCancel, #modalConfirmAc
     $(e.currentTarget).find('input[name="operation_id"]').val(operation_id);
 });
 
-$('input[name=fc]').autocomplete({
-    serviceUrl: 'lookup/characters/',
-    onSelect: function (suggestion) {
-        $('input[name="fc_character_id"]').val(suggestion.data);
-        $('input[name="fc"]').css('border-color', 'green');
-    },
-    onInvalidateSelection: function () {
-        $('input[name="fc_character_id"]').val(null);
-        $('input[name="fc"]').css('border-color', '');
-    },
-    minChars: 3
-});
+// $('input[name=fc]').autocomplete({
+//     serviceUrl: 'lookup/characters/',
+//     onSelect: function (suggestion) {
+//         $('input[name="fc_character_id"]').val(suggestion.data);
+//         $('input[name="fc"]').css('border-color', 'green');
+//     },
+//     onInvalidateSelection: function () {
+//         $('input[name="fc_character_id"]').val(null);
+//         $('input[name="fc"]').css('border-color', '');
+//     },
+//     minChars: 3
+// });
 
 $('input[name=staging_sys]').autocomplete({
     serviceUrl: 'lookup/systems/',

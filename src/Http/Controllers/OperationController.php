@@ -19,6 +19,7 @@ use Seat\Kassie\Calendar\Models\Operation;
 use Seat\Kassie\Calendar\Models\Attendee;
 use Seat\Kassie\Calendar\Models\Tag;
 use Seat\Web\Models\Acl\Role;
+use Seat\Web\Models\User;
 
 
 /**
@@ -84,10 +85,12 @@ class OperationController extends Controller
             // 'importance' => 'required|between:0,5',
             'pap_count' => 'required|between:0.5,5',
             // 'known_duration' => 'required',
-            'time_start' => 'required|date'
+            'time_start' => 'required|date',
+            'fc' => 'required'
         ]);
 
         $operation = new Operation($request->all());
+
         $tags = array();
 
         foreach ($request->toArray() as $name => $value) {
@@ -98,14 +101,20 @@ class OperationController extends Controller
             }
         }
 
+        if ( !(auth()->user()->has('calendar.updateAll', false)) && 
+            !in_array($operation->fc_character_id, auth()->user()->group->users->pluck('id')->toArray()) ) {
+            $operation->fc              = auth()->user()->name;
+            $operation->fc_character_id = auth()->user()->id;
+        } else {
+            $fc_user = User::findOrFail($operation->fc_character_id);
+            $operation->fc = $fc_user->name;
+            $operation->fc_character_id = $fc_user->id;
+        }
+
         $operation->start_at = Carbon::parse($request->time_start);
         // $operation->start_at = Carbon::parse($operation->start_at);
 
         $operation->importance = 2;
-        if ( !(auth()->user()->has('calendar.updateAll', false)) ) {
-            $operation->fc              = auth()->user()->name;
-            $operation->fc_character_id = auth()->user()->id;
-        }
 
         // if ($request->importance == 0)
         //     $operation->importance = 0;
@@ -154,8 +163,19 @@ class OperationController extends Controller
             $operation->staging_sys     = null; // $request->staging_sys;
             $operation->staging_info    = null; // $request->staging_info;
             $operation->staging_sys_id  = null; // $request->staging_sys_id == null ? null : $request->staging_sys_id;
-            $operation->fc              = auth()->user()->has('calendar.updateAll', false) ? $request->fc : auth()->user()->name ;
-            $operation->fc_character_id = auth()->user()->has('calendar.updateAll', false) ? ($request->fc_character_id == null ? null : $request->fc_character_id) : auth()->user()->id;
+            // $operation->fc              = auth()->user()->has('calendar.updateAll', false) ? $request->fc : auth()->user()->name ;
+            // $operation->fc_character_id = auth()->user()->has('calendar.updateAll', false) ? ($request->fc_character_id == null ? null : $request->fc_character_id) : auth()->user()->id;
+
+            if ( !(auth()->user()->has('calendar.updateAll', false)) && 
+                !in_array($request->fc_character_id, auth()->user()->group->users->pluck('id')->toArray()) ) {
+                $operation->fc              = auth()->user()->name;
+                $operation->fc_character_id = auth()->user()->id;
+            } else {
+                $fc_user = User::findOrFail($request->fc_character_id);
+                $operation->fc = $fc_user->name;
+                $operation->fc_character_id = $fc_user->id;
+            }
+
 
             $operation->start_at = Carbon::parse($request->time_start);
             $operation->end_at = null;

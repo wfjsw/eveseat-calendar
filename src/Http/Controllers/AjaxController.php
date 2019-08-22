@@ -119,10 +119,10 @@ class AjaxController
             //     return sprintf('<span data-toggle="tooltip" title="%s">%s</span>',
             //         $row->start_at, human_diff($row->start_at));
             // })
-            ->editColumn('start_at', function ($row) {
-                return sprintf('%s',
-                    $row->start_at);
-            })
+            // ->editColumn('start_at', function ($row) {
+            //     return sprintf('%s',
+            //         $row->start_at);
+            // })
             // ->editColumn('end_at', function ($row) {
             //     return sprintf('<span data-toggle="tooltip" title="%s">%s</span>',
             //         $row->end_at, human_diff($row->end_at));
@@ -151,7 +151,7 @@ class AjaxController
             })
             // ->rawColumns(['title', 'tags', 'importance', 'start_at', 'end_at', 'duration',
             //               'fleet_commander', 'staging_sys', 'subscription', 'actions'])
-            ->rawColumns(['start_at', fleet_commander', 'actions'])
+            ->rawColumns(['fleet_commander', 'actions'])
             ->make(true);
     }
 }

@@ -9,10 +9,39 @@ use Seat\Eveapi\Models\Corporation\CorporationInfo;
 use Seat\Kassie\Calendar\Models\Pap;
 use Seat\Web\Http\Controllers\Controller;
 use Seat\Kassie\Calendar\Models\Attendee;
-
+use Seat\Web\Models\User;
 
 class LookupController extends Controller
 {
+
+    public function lookupFC(Request $request) {
+        if ($request->query('q', null) == null) {
+            $characters = User::where('group_id', auth()->user()->group_id)->get()->map(function ($char, $key) {
+                return [
+                    'id' => $char->id,
+                    'text' => $char->name,
+                ];
+            });
+        } else if (auth()->user()->has('calendar.updateAll', false)) {
+            $characters = User::where('name', 'like', '%' . $request->query('q', '') . '%')->get()->map(function ($char, $key) {
+                return [
+                    'id' => $char->character_id,
+                    'text' => $char->name,
+                ];
+            });
+        } else {
+            $characters = User::where('group_id', auth()->user()->group_id)->where('name', 'like', '%' . $request->query('q', '') . '%')->get()->map(function ($char, $key) {
+                return [
+                    'id' => $char->character_id,
+                    'text' => $char->name,
+                ];
+            });
+        }
+
+        return response()->json([
+            'results' => $characters,
+        ]);
+    }
 
     public function lookupCharacters(Request $request)
     {

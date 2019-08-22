@@ -125,7 +125,7 @@
                         </div>
                     </div> --}}
                     {{-- Operation FC --}}
-                    @if(auth()->user()->has('calendar.updateAll', false))
+                    {{-- @if(auth()->user()->has('calendar.updateAll', false))
                     <div class="form-group">
                         <label for="fc" class="col-sm-3 control-label">{{ trans('calendar::seat.fleet_commander') }}</label>
                         <div class="col-sm-9">
@@ -134,7 +134,13 @@
                             <input type="hidden" name="fc_character_id">
                         </div>
                     </div>
-                    @endif
+                    @endif --}}
+                    <div class="form-group">
+                        <label for="fc_character_id" class="col-sm-3 control-label">Characters</label>
+                        <div class="col-sm-9">
+                            <select id='fc_character_id' name="fc_character_id"></select>
+                        </div>
+                    </div>
                     {{-- Operation description --}}
                     <div class="form-group">
                         <label for="description" class="col-sm-3 control-label">{{ trans('calendar::seat.description') }}</label>
@@ -176,6 +182,16 @@
 
 @push('javascript')
 <script type="text/javascript">
+    $("select#fc_character_id").select2({
+        placeholder: "{{ trans('calendar::seat.placeholder_fc') }}",
+        delay: 500,
+        ajax: {
+            url: "lookup/fc/",
+            dataType: 'json',
+            cache: true,
+        }
+    })
+
     $('#update_operation_role').select2({
         placeholder: "{{ trans('calendar::seat.select_role_filter_placeholder') }}",
         allowClear: true
