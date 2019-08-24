@@ -11,7 +11,7 @@
         <h3 class="panel-title pull-left">{{ trans('calendar::seat.paps') }}</h3>
     </div>
     <div class="panel-body">
-        <h3>Stats</h3>
+    {{--    <h3>Stats</h3>
         <div class="row">
             <div class="col-sm-4">
                 <div class="input-group input-group-sm" id="yearChartSettings">
@@ -50,8 +50,8 @@
             <div class="chart">
                 <canvas id="monthlyStackedChart" width="900"></canvas>
             </div>
-        </div>
-        <div class="row">
+        </div> --}}
+        {{-- <div class="row">
             <div class="col-md-12">
                 <h3>Ranking</h3>
                 <div class="col-md-4">
@@ -130,16 +130,89 @@
                     </table>
                 </div>
             </div>
+        </div> --}}
+        
+        <div class="row">
+            <div class="col-md-12">
+                <h3>Ranking</h3>
+                <div class="col-md-4">
+                    <h4>Week 
+                        <select id="pap-rank-week">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                    </h4>
+                    <table id="weekly-rank" class="table table-striped ranking-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Character</th>
+                                <th>Paps</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-4">
+                    <h4>Month
+                        <select id="pap-rank-month">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="12">12</option>
+                        </select>
+                    </h4>
+                    <table id="monthly-rank" class="table table-striped ranking-table">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Character</th>
+                            <th>Paps</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-4">
+                    <h4>Year
+                        <input type="number" id="pap-rank-year" min="1970" max="2099">
+                    </h4>
+                    <table id="yearly-rank" class="table table-striped ranking-table">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Character</th>
+                            <th>Paps</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 @stop
 
 @push('javascript')
-<script type="text/javascript" src="{{ asset('web/js/rainbowvis.js') }}"></script>
+{{-- <script type="text/javascript" src="{{ asset('web/js/rainbowvis.js') }}"></script> --}}
 <script type="text/javascript">
 $(function(){
-    var yearChart, monthChart;
+    {{-- /* var yearChart, monthChart;
     var rainbow = new Rainbow();
     var yearChartParameters = $('#yearChartSettings');
     var monthChartParameters = $('#monthlyStackedChartSettings');
@@ -406,7 +479,88 @@ $(function(){
     });
 
     yearChartParameters.find('button').click();
-    monthChartParameters.find('button').click();
+    monthChartParameters.find('button').click(); */ --}}
+
+    const now = new Date()
+
+    $('#pap-rank-week').val(Math.ceil(now.getUTCDate() / 7))
+    $('#pap-rank-month').val(now.getUTCMonth() + 1)
+    $('#pap-rank-year').val(now.getUTCFullYear())
+
+    const tweeklyrank = window.tweeklyrank = $('table#weekly-rank').DataTable({
+        processing: true,
+        serverSide: false,
+        ordering: false,
+        lengthChange: false,
+        pageLength: 10,
+        searchDelay: 300,
+        dom: '<\'row\'<\'col-sm-6\'f>><\'row\'<\'col-sm-12\'tr>><\'row\'<\'col-sm-12\'i><\'col-sm-12\'p>>',
+        columns: [
+            {data: 'identifier', name: 'identifier'},
+            {data: 'character_id', name: 'character_id'},
+            {data: 'qty', name: 'qty'}
+        ],
+        ajax: {
+            url: '{{url()->current()}}',
+            data: (d) => {
+                d.division = 'weekly'
+                d.week = $('#pap-rank-week').val()
+                d.month = $('#pap-rank-month').val()
+                d.year = $('#pap-rank-year').val()
+            }
+        }
+    })
+
+    const tmonthlyrank = window.tmonthlyrank = $('table#monthly-rank').DataTable({
+        processing: true,
+        serverSide: false,
+        ordering: false,
+        lengthChange: false,
+        pageLength: 10,
+        searchDelay: 300,
+        dom: '<\'row\'<\'col-sm-6\'f>><\'row\'<\'col-sm-12\'tr>><\'row\'<\'col-sm-12\'i><\'col-sm-12\'p>>',
+        columns: [
+            {data: 'identifier', name: 'identifier'},
+            {data: 'character_id', name: 'character_id'},
+            {data: 'qty', name: 'qty'}
+        ],
+        ajax: {
+            url: '{{url()->current()}}',
+            data: (d) => {
+                d.division = 'monthly'
+                d.month = $('#pap-rank-month').val()
+                d.year = $('#pap-rank-year').val()
+            }
+        }
+    })
+
+    const tyearlyrank = window.tyearlyrank = $('table#yearly-rank').DataTable({
+        processing: true,
+        serverSide: false,
+        ordering: false,
+        lengthChange: false,
+        pageLength: 10,
+        searchDelay: 300,
+        dom: '<\'row\'<\'col-sm-6\'f>><\'row\'<\'col-sm-12\'tr>><\'row\'<\'col-sm-12\'i><\'col-sm-12\'p>>',
+        columns: [
+            {data: 'identifier', name: 'identifier'},
+            {data: 'character_id', name: 'character_id'},
+            {data: 'qty', name: 'qty'}
+        ],
+        ajax: {
+            url: '{{url()->current()}}',
+            data: (d) => {
+                d.division = 'yearly'
+                d.year = $('#pap-rank-year').val()
+            }
+        }
+    })
+
+    $('#pap-rank-week, #pap-rank-month, #pap-rank-year').on('change', function () {
+        window.tweeklyrank.ajax.reload()
+        window.tmonthlyrank.ajax.reload()
+        window.tyearlyrank.ajax.reload()
+    })
 
     function rgb2hex(rgb) {
         try {

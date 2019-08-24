@@ -26,17 +26,17 @@ Route::group([
         'middleware' => 'corporationbouncer:kassie_calendar_paps',
     ]);
 
-    Route::get('/view/paps/{corporation_id}/json/year', [
-        'as' => 'corporation.ajax.paps.year',
-        'uses' => 'CorporationController@getYearPapsStats',
-        'middleware' => 'corporationbouncer:kassie_calendar_paps',
-    ]);
+    // Route::get('/view/paps/{corporation_id}/json/year', [
+    //     'as' => 'corporation.ajax.paps.year',
+    //     'uses' => 'CorporationController@getYearPapsStats',
+    //     'middleware' => 'corporationbouncer:kassie_calendar_paps',
+    // ]);
 
-    Route::get('/view/paps/{corporation_id}/json/stacked', [
-        'as' => 'corporation.ajax.paps.stacked',
-        'uses' => 'CorporationController@getMonthlyStackedPapsStats',
-        'middleware' => 'corporationbouncer:kassie_calendar_paps',
-    ]);
+    // Route::get('/view/paps/{corporation_id}/json/stacked', [
+    //     'as' => 'corporation.ajax.paps.stacked',
+    //     'uses' => 'CorporationController@getMonthlyStackedPapsStats',
+    //     'middleware' => 'corporationbouncer:kassie_calendar_paps',
+    // ]);
 
 });
 
